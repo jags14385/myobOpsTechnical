@@ -21,6 +21,7 @@
     "typescript": "~3.7.2"
   },
   "dependencies": {
+    "@aws-cdk/aws-apigateway": "^1.52.0",
     "@aws-cdk/aws-lambda": "^1.52.0",
     "@aws-cdk/core": "1.52.0",
     "@types/aws-lambda": "^8.10.59"
