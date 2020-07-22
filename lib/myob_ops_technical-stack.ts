@@ -11,7 +11,7 @@ export class MyobOpsTechnicalStack extends cdk.Stack {
       handler: "hello.handler",
       runtime:lambda.Runtime.NODEJS_12_X,
       memorySize: 256,
-      timeout: cdk.Duration.seconds(10)
+      timeout: cdk.Duration.seconds(10),
     });
 
     new apiGateway.LambdaRestApi(this,"Endpoint",{
