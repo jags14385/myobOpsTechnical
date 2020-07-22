@@ -5,8 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Run a one-line script
-        run: ls -la
+      - name: cdk ls
+        uses: youyo/aws-cdk-github-actions@v1
+        with:
+          cdk_subcommand: 'ls'
+          actions_comment: true
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
+          AWS_DEFAULT_REGION: 'us-east-1'
 
       - name: cdk diff
         uses: youyo/aws-cdk-github-actions@v1
