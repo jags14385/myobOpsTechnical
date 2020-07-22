@@ -14,9 +14,19 @@ export class MyobOpsTechnicalStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(10),
     });
 
+    const metaDataLambda = new lambda.Function(this,"MetadataLambda",{
+      code: lambda.Code.asset("lambda"),
+      handler: "metadata.handler",
+      runtime: lambda.Runtime.NODEJS_12_X,
+    })
+
     new apiGateway.LambdaRestApi(this,"Endpoint",{
       handler: helloLambda
     });
+
+    new apiGateway.LambdaRestApi(this,"MetaDataEndpoint",{
+      handler: metaDataLambda
+    })
   }
 
 }

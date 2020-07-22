@@ -27,3 +27,17 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * Enable monitoring + health endpoint
 * List pros and cons of the approach
 * Figure out a way of local testing (without deploying everytime)
+
+## Pros vs Cons
+
+### Pros
+* very Flexible
+* sane and secure defaults
+* DRY-friendly
+* Can write tests and easy to get started. Very Dev friendly 
+
+### Cons
+* not cloud agnostic: works only on AWS
+* cdk diff does not show all the chnages especially on the Network Layer
+* reference : https://github.com/aws/aws-cdk/issues/1299
+* new features are still being released.

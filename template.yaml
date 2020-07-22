@@ -22,7 +22,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameters5df36dda5e56f8eb1f546c77a6b6a5f9deb80a4aa3443324cd80bc86cac2ec05S3BucketD32CBA4E
+          Ref: AssetParameters32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8S3Bucket49AAC037
         S3Key:
           Fn::Join:
             - ""
@@ -30,12 +30,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters5df36dda5e56f8eb1f546c77a6b6a5f9deb80a4aa3443324cd80bc86cac2ec05S3VersionKey9098859C
+                      - Ref: AssetParameters32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8S3VersionKeyEB8961EA
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters5df36dda5e56f8eb1f546c77a6b6a5f9deb80a4aa3443324cd80bc86cac2ec05S3VersionKey9098859C
+                      - Ref: AssetParameters32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8S3VersionKeyEB8961EA
       Handler: hello.handler
       Role:
         Fn::GetAtt:
@@ -48,6 +48,55 @@ Resources:
       - HelloLambdaServiceRoleE071F162
     Metadata:
       aws:cdk:path: MyobOpsTechnicalStack/HelloLambda/Resource
+      aws:asset:path: /Users/jagan/code/myobOpsTechnical/lambda
+      aws:asset:property: Code
+  MetadataLambdaServiceRoleA6FBDAB6:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetadataLambda/ServiceRole/Resource
+  MetadataLambda9AAE6EAF:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8S3Bucket49AAC037
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8S3VersionKeyEB8961EA
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8S3VersionKeyEB8961EA
+      Handler: metadata.handler
+      Role:
+        Fn::GetAtt:
+          - MetadataLambdaServiceRoleA6FBDAB6
+          - Arn
+      Runtime: nodejs12.x
+    DependsOn:
+      - MetadataLambdaServiceRoleA6FBDAB6
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetadataLambda/Resource
       aws:asset:path: /Users/jagan/code/myobOpsTechnical/lambda
       aws:asset:property: Code
   EndpointEEF1FD8F:
@@ -269,21 +318,240 @@ Resources:
               - /invocations
     Metadata:
       aws:cdk:path: MyobOpsTechnicalStack/Endpoint/Default/ANY/Resource
+  MetaDataEndpointD96C378A:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: MetaDataEndpoint
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/Resource
+  MetaDataEndpointCloudWatchRole9C4748FC:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/CloudWatchRole/Resource
+  MetaDataEndpointAccountEDF2B1BB:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - MetaDataEndpointCloudWatchRole9C4748FC
+          - Arn
+    DependsOn:
+      - MetaDataEndpointD96C378A
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/Account
+  MetaDataEndpointDeployment970E4DD3771defc5b1e334bfa39fafe1951a6d78:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: MetaDataEndpointD96C378A
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - MetaDataEndpointproxyANY45C44A61
+      - MetaDataEndpointproxyA77AC82C
+      - MetaDataEndpointANY9FF467F5
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/Deployment/Resource
+  MetaDataEndpointDeploymentStageprodEB9C82CE:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: MetaDataEndpointD96C378A
+      DeploymentId:
+        Ref: MetaDataEndpointDeployment970E4DD3771defc5b1e334bfa39fafe1951a6d78
+      StageName: prod
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/DeploymentStage.prod/Resource
+  MetaDataEndpointproxyA77AC82C:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - MetaDataEndpointD96C378A
+          - RootResourceId
+      PathPart: "{proxy+}"
+      RestApiId:
+        Ref: MetaDataEndpointD96C378A
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/Default/{proxy+}/Resource
+  MetaDataEndpointproxyANYApiPermissionMyobOpsTechnicalStackMetaDataEndpoint1F83987FANYproxy298789F9:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - MetadataLambda9AAE6EAF
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: MetaDataEndpointD96C378A
+            - /
+            - Ref: MetaDataEndpointDeploymentStageprodEB9C82CE
+            - /*/*
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/Default/{proxy+}/ANY/ApiPermission.MyobOpsTechnicalStackMetaDataEndpoint1F83987F.ANY..{proxy+}
+  MetaDataEndpointproxyANYApiPermissionTestMyobOpsTechnicalStackMetaDataEndpoint1F83987FANYproxyD998F56D:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - MetadataLambda9AAE6EAF
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: MetaDataEndpointD96C378A
+            - /test-invoke-stage/*/*
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/Default/{proxy+}/ANY/ApiPermission.Test.MyobOpsTechnicalStackMetaDataEndpoint1F83987F.ANY..{proxy+}
+  MetaDataEndpointproxyANY45C44A61:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: ANY
+      ResourceId:
+        Ref: MetaDataEndpointproxyA77AC82C
+      RestApiId:
+        Ref: MetaDataEndpointD96C378A
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - MetadataLambda9AAE6EAF
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/Default/{proxy+}/ANY/Resource
+  MetaDataEndpointANYApiPermissionMyobOpsTechnicalStackMetaDataEndpoint1F83987FANYF947603C:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - MetadataLambda9AAE6EAF
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: MetaDataEndpointD96C378A
+            - /
+            - Ref: MetaDataEndpointDeploymentStageprodEB9C82CE
+            - /*/
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/Default/ANY/ApiPermission.MyobOpsTechnicalStackMetaDataEndpoint1F83987F.ANY..
+  MetaDataEndpointANYApiPermissionTestMyobOpsTechnicalStackMetaDataEndpoint1F83987FANY7CB35CA3:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - MetadataLambda9AAE6EAF
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: MetaDataEndpointD96C378A
+            - /test-invoke-stage/*/
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/Default/ANY/ApiPermission.Test.MyobOpsTechnicalStackMetaDataEndpoint1F83987F.ANY..
+  MetaDataEndpointANY9FF467F5:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: ANY
+      ResourceId:
+        Fn::GetAtt:
+          - MetaDataEndpointD96C378A
+          - RootResourceId
+      RestApiId:
+        Ref: MetaDataEndpointD96C378A
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - MetadataLambda9AAE6EAF
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: MyobOpsTechnicalStack/MetaDataEndpoint/Default/ANY/Resource
   CDKMetadata:
     Type: AWS::CDK::Metadata
     Properties:
       Modules: aws-cdk=1.52.0,@aws-cdk/assets=1.52.0,@aws-cdk/aws-apigateway=1.52.0,@aws-cdk/aws-cloudwatch=1.52.0,@aws-cdk/aws-codeguruprofiler=1.52.0,@aws-cdk/aws-ec2=1.52.0,@aws-cdk/aws-events=1.52.0,@aws-cdk/aws-iam=1.52.0,@aws-cdk/aws-kms=1.52.0,@aws-cdk/aws-lambda=1.52.0,@aws-cdk/aws-logs=1.52.0,@aws-cdk/aws-s3=1.52.0,@aws-cdk/aws-s3-assets=1.52.0,@aws-cdk/aws-sqs=1.52.0,@aws-cdk/aws-ssm=1.52.0,@aws-cdk/cloud-assembly-schema=1.52.0,@aws-cdk/core=1.52.0,@aws-cdk/cx-api=1.52.0,@aws-cdk/region-info=1.52.0,jsii-runtime=node.js/v12.18.1
     Condition: CDKMetadataAvailable
 Parameters:
-  AssetParameters5df36dda5e56f8eb1f546c77a6b6a5f9deb80a4aa3443324cd80bc86cac2ec05S3BucketD32CBA4E:
+  AssetParameters32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8S3Bucket49AAC037:
     Type: String
-    Description: S3 bucket for asset "5df36dda5e56f8eb1f546c77a6b6a5f9deb80a4aa3443324cd80bc86cac2ec05"
-  AssetParameters5df36dda5e56f8eb1f546c77a6b6a5f9deb80a4aa3443324cd80bc86cac2ec05S3VersionKey9098859C:
+    Description: S3 bucket for asset "32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8"
+  AssetParameters32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8S3VersionKeyEB8961EA:
     Type: String
-    Description: S3 key for asset version "5df36dda5e56f8eb1f546c77a6b6a5f9deb80a4aa3443324cd80bc86cac2ec05"
-  AssetParameters5df36dda5e56f8eb1f546c77a6b6a5f9deb80a4aa3443324cd80bc86cac2ec05ArtifactHashC4863D8F:
+    Description: S3 key for asset version "32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8"
+  AssetParameters32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8ArtifactHash88564F8F:
     Type: String
-    Description: Artifact hash for asset "5df36dda5e56f8eb1f546c77a6b6a5f9deb80a4aa3443324cd80bc86cac2ec05"
+    Description: Artifact hash for asset "32ed8ceb8c59418c741bf880a699fa83f2db8b7f4e40200f1e5057d8118f7da8"
 Outputs:
   Endpoint8024A810:
     Value:
@@ -297,6 +565,19 @@ Outputs:
           - Ref: AWS::URLSuffix
           - /
           - Ref: EndpointDeploymentStageprodB78BEEA0
+          - /
+  MetaDataEndpointA8C720EA:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: MetaDataEndpointD96C378A
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: MetaDataEndpointDeploymentStageprodEB9C82CE
           - /
 Conditions:
   CDKMetadataAvailable:
