@@ -7,7 +7,7 @@ exports.handler = async function(event: AWSLambda.APIGatewayEvent){
 
     return{
         statusCode: 200,
-        headers: {"Content-Type": "text/plain"},
-        body: `Hello, from Jags`
+        headers: {"Content-Type": "application/json"},
+        body: {"data":"Hello, from Jags"}
     }
 }
