@@ -1,6 +1,6 @@
-# Welcome to your CDK TypeScript project!
+# Hi
 
-You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`MyobOpsTechnicalStack`)
+It demonstrates a CDK app with an instance of a stack (`MyobOpsTechnicalStack`)
 which contains an Amazon Lambda + API Gateway.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
