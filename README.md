@@ -1,7 +1,15 @@
 # Hi
 
-It demonstrates a CDK app with an instance of a stack (`MyobOpsTechnicalStack`)
-which contains an Amazon Lambda + API Gateway.
+- It demonstrates a CDK app with an instance of a stack (`MyobOpsTechnicalStack`)
+which contains an Amazon Lambda + API Gateway. 
+- The CI pipeline uses github Actions + Secrets.
+
+To test the lambdas locally , use aws sam local.
+Steps:
+
+- Generate the template using `cdk synth` . `cdk synth --no-staging > template.yaml`
+- `sam local invoke HelloLambda3D9C82D6`
+- `sam local invoke HelloLambda3D9C82D6 --event=sample_events/helloEvent.json`
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
