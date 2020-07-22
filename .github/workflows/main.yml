@@ -21,7 +21,7 @@ jobs:
       - name: cdk deploy
         uses: youyo/aws-cdk-github-actions@v1
         with:
-          cdk_subcommand: 'deploy'
+          cdk_subcommand: 'deploy --require-approval never'
           cdk_stack: 'MyobOpsTechnicalStack'
           actions_comment: false
           args: '--require-approval never'
