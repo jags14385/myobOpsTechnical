@@ -5,6 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Run a one-line script
+        run: ls -la
+
       - name: cdk diff
         uses: youyo/aws-cdk-github-actions@v1
         with:
