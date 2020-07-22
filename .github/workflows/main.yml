@@ -8,6 +8,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.1
 
+      - name: Typescript compiler
+        uses: iCrawl/action-tsc@v1
+
       - name: cdk diff
         uses: youyo/aws-cdk-github-actions@v1
         with:
