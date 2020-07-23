@@ -21,12 +21,12 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 ## Todo:
 
-* Add cdk tests
+* Add cdk tests -- Done
 * Add tests for api
-* Add pipeline for code changes
-* Enable monitoring + health endpoint
-* List pros and cons of the approach
-* Figure out a way of local testing (without deploying everytime)
+* Enable monitoring
+* Add pipeline for code changes -- Done
+* List pros and cons of the approach --Done
+* Figure out a way of local testing (without deploying everytime) -- Done
 
 ## Pros vs Cons of CDK approach
 
