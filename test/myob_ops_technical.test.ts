@@ -33,8 +33,3 @@ test('Lambda should throw error when timeOut requirements are violated', () => {
     { downstream: helloLambdaProps , memoryCapacity:128 , timeOutInSeconds:2});
   }).toThrowError(/TimeOutInSeconds must be greater than or equal to 3/);
 });
-
-
-test('Should successfully create the Lambda',() =>{
-
-});
