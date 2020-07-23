@@ -2,7 +2,7 @@ import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import * as cdk from '@aws-cdk/core';
 import * as MyobOpsTechnical from '../lib/myob_ops_technical-stack';
 
-test('SQS Queue Created', () => {
+test('Lambda created has minimum memory requirements', () => {
     const app = new cdk.App();
     // WHEN
     const stack = new MyobOpsTechnical.MyobOpsTechnicalStack(app, 'MyTestStack');
@@ -12,7 +12,7 @@ test('SQS Queue Created', () => {
     }));
 });
 
-test('SNS Topic Created', () => {
+test('Lambda created has minimum timeout requirements', () => {
   const app = new cdk.App();
   // WHEN
   const stack = new MyobOpsTechnical.MyobOpsTechnicalStack(app, 'MyTestStack');

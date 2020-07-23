@@ -28,7 +28,7 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * List pros and cons of the approach
 * Figure out a way of local testing (without deploying everytime)
 
-## Pros vs Cons
+## Pros vs Cons of CDK approach
 
 ### Pros
 * very Flexible
