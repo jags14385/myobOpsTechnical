@@ -23,7 +23,6 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 * Add cdk tests -- Done
 * Enable monitoring -- CloudWatch Logs
-* Add tests for api
 * Add pipeline for code changes -- https://github.com/jags14385/myobOpsTechnical/actions
 * List pros and cons of the approach -- Mentioned Below
 * Figure out a way of local testing (without deploying everytime) -- AWS SAM Local
